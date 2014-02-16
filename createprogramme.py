@@ -13,8 +13,9 @@ if __name__ == '__main__':
    
    parser = argparse.ArgumentParser(description = 'Create a word document for a school booking.', epilog="(c)2014 A Cripps")
    parser.add_argument('--school','-s', dest='school', metavar='S', help="A string of the name of the School.", required=True)
-   parser.add_argument('--file', '-f', metavar='F', help="Filename to be output.")
-
+   parser.add_argument('--output', '-o', metavar='F', help="Filename to be output.")
+   parser.add_argument('--from', '-f', dest='datefrom', help="A date that the visit starts.")
+   parser.add_argument('--to', '-t', dest='dateto', help="A date that the visit stops.")
 
    args = parser.parse_args()
    
@@ -32,8 +33,7 @@ if __name__ == '__main__':
    # Append two headings in to a paragraph
    
    body.append(heading(args.school, 1))
-
-
+   body.append(paragraph('From ' + args.datefrom + ' To ' + args.dateto))
 
 
    # Create our properties, contenttypes, and other support files
@@ -49,9 +49,9 @@ if __name__ == '__main__':
    contenttypes = contenttypes()
    websettings = websettings()
    wordrelationships = wordrelationships(relationships)
-   if (args.file):
+   if (args.output):
       print "file is:" + args.file
-      filename = args.file+".docx"
+      filename = args.output+".docx"
    else:
       filename = args.school+".docx"
    savedocx(document, coreprops, appprops, contenttypes, websettings, wordrelationships,filename)
